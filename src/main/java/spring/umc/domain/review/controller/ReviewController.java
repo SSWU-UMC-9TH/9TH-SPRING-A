@@ -33,7 +33,7 @@ public class ReviewController {
             @PageableDefault(size = 10) Pageable pageable
     ) {
         Page<ReviewResponseDto> reviews = reviewService.getMyReviews(userId, storeName, ratingGroup, pageable);
-        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK, reviews));
+        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.REVIEW_LIST_OK, reviews));
     }
 
 }
