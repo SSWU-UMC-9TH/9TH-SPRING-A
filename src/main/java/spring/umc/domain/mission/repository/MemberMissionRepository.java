@@ -2,6 +2,8 @@ package spring.umc.domain.mission.repository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,6 +31,15 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
     /**
      * 특정 사용자(Member)가 '도전 중(CHALLENGING)'인 미션(Mission) 목록 반환
      */
-    @Query("SELECT mm.mission FROM MemberMission mm WHERE mm.member = :member AND mm.status = 'CHALLENGING'")
-    List<Mission> findChallengingMissionsByMember(@Param("member") Member member);
+//    @Query("SELECT mm.mission FROM MemberMission mm WHERE mm.member = :member AND mm.status = 'CHALLENGING'")
+//    List<Mission> findChallengingMissionsByMember(@Param("member") Member member);
+
+    /**
+     * 특정 사용자(Member)가 '도전 중(CHALLENGING)'인 미션(Mission) 목록 반환
+     * (JPQL 및 페이징 수정)
+     */
+    @Query("SELECT mm.mission FROM MemberMission mm " +
+            "WHERE mm.member = :member " +
+            "AND mm.status = spring.umc.domain.mission.enums.Status.CHALLENGING")
+    Page<Mission> findChallengingMissionsByMember(@Param("member") Member member, Pageable pageable);
 }

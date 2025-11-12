@@ -53,8 +53,7 @@ public class MemberMissionServiceImpl implements MemberMissionService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
-        List<Mission> missions = memberMissionRepository.findChallengingMissionsByMember(member);
-        return Page.empty(pageable);
+        return memberMissionRepository.findChallengingMissionsByMember(member, pageable);
     }
 
     /**
