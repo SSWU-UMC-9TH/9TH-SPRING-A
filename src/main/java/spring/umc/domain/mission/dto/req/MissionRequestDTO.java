@@ -1,12 +1,12 @@
-package spring.umc.domain.mission.dto;
+package spring.umc.domain.mission.dto.req;
 
 import lombok.Getter;
 import java.time.LocalDate;
 
-public class MissionRequestDto {
+public class MissionRequestDTO {
 
     @Getter
-    public static class CreateMissionDto {
+    public static class CreateMissionDTO {
         private String content;
         private Integer point;
         private LocalDate deadline;

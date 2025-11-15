@@ -6,12 +6,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.entity.Member;
+import spring.umc.domain.member.exception.MemberException;
+import spring.umc.domain.member.exception.code.MemberErrorCode;
 import spring.umc.domain.member.repository.MemberRepository;
 import spring.umc.domain.review.entity.Review;
 import spring.umc.domain.review.entity.ReviewImage;
 import spring.umc.domain.review.repository.ReviewImageRepository;
 import spring.umc.domain.review.repository.ReviewRepository;
 import spring.umc.domain.store.entity.Store;
+import spring.umc.domain.store.exception.StoreException;
+import spring.umc.domain.store.exception.code.StoreErrorCode;
 import spring.umc.domain.store.repository.StoreRepository;
 
 @Service
@@ -26,11 +30,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public Review createReview(Long memberId, Long storeId, String content, Integer score, String imageUrl) {
+    public Review createReview(Long memberId, Long storeId, String content, Double score, String imageUrl) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("Store not found"));
+                .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
 
         ReviewImage reviewImage = ReviewImage.builder()
                 .reviewImageUrl(imageUrl)
@@ -58,7 +62,10 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Page<Review> searchReviews(Long memberId, Long storeId, Integer minScore, Pageable pageable) {
+    public Page<Review> searchReviews(Long memberId, Long storeId, Double minScore, Pageable pageable) {
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
         return reviewRepository.searchReviews(memberId, storeId, minScore, pageable);
     }
 }

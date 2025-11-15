@@ -7,10 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.entity.Member;
+import spring.umc.domain.member.exception.MemberException;
+import spring.umc.domain.member.exception.code.MemberErrorCode;
 import spring.umc.domain.member.repository.MemberRepository;
 import spring.umc.domain.mission.entity.Mission;
 import spring.umc.domain.mission.entity.mapping.MemberMission;
 import spring.umc.domain.mission.enums.Status;
+import spring.umc.domain.mission.exception.MissionException;
+import spring.umc.domain.mission.exception.code.MissionErrorCode;
 import spring.umc.domain.mission.repository.MemberMissionRepository;
 import spring.umc.domain.mission.repository.MissionRepository;
 
@@ -27,13 +31,13 @@ public class MemberMissionServiceImpl implements MemberMissionService {
     @Transactional
     public MemberMission challengeMission(Long memberId, Long missionId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
         Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new RuntimeException("Mission not found"));
+                .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
 
         memberMissionRepository.findByMemberAndMission(member, mission)
                 .ifPresent(mm -> {
-                    throw new RuntimeException("Already challenging mission");
+                    throw new MissionException(MissionErrorCode.MEMBER_MISSION_ALREADY_EXISTS);
                 });
 
         MemberMission memberMission = MemberMission.builder()
@@ -51,7 +55,7 @@ public class MemberMissionServiceImpl implements MemberMissionService {
     @Override
     public Page<Mission> getMyChallengingMissions(Long memberId, Pageable pageable) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         return memberMissionRepository.findChallengingMissionsByMember(member, pageable);
     }
@@ -63,17 +67,17 @@ public class MemberMissionServiceImpl implements MemberMissionService {
     @Transactional
     public MemberMission completeMission(Long memberId, Long missionId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
         Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new RuntimeException("Mission not found"));
+                .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
 
         // '도전 중'인 미션인지 검증
         MemberMission memberMission = memberMissionRepository.findByMemberAndMission(member, mission)
-                .orElseThrow(() -> new RuntimeException("Mission not challenged"));
+                .orElseThrow(() -> new MissionException(MissionErrorCode.MEMBER_MISSION_NOT_FOUND));
 
         // 이미 완료했거나, 도전 중이 아닌지 확인
         if (memberMission.getStatus() != Status.CHALLENGING) {
-            throw new RuntimeException("Mission status is not CHALLENGING");
+            throw new MissionException(MissionErrorCode.MEMBER_MISSION_NOT_CHALLENGING);
         }
 
         // 미션 상태를 'COMPLETED'로 변경

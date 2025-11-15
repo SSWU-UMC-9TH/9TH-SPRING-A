@@ -1,11 +1,11 @@
-package spring.umc.domain.member.dto;
+package spring.umc.domain.member.dto.req;
 
 import lombok.Getter;
 
-public class InquiryRequestDto {
+public class InquiryRequestDTO {
 
     @Getter
-    public static class CreateInquiryDto {
+    public static class CreateInquiryDTO {
         private String title;
         private String content;
         private String imageUrl;

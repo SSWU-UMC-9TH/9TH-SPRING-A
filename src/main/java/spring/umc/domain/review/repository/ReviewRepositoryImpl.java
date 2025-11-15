@@ -24,7 +24,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Review> searchReviews(Long memberId, Long storeId, Integer minScore, Pageable pageable) {
+    public Page<Review> searchReviews(Long memberId, Long storeId, Double minScore, Pageable pageable) {
 
         BooleanBuilder builder = new BooleanBuilder();
 

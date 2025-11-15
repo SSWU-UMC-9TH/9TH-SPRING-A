@@ -57,6 +57,9 @@ sourceSets {
 // 컴파일 시 생성 경로 지정
 tasks.withType(JavaCompile).configureEach {
 	options.generatedSourceOutputDirectory.set(querydslDir)
+
+	// 컨트롤러 파라미터 이름 유지를 위한 컴파일러 옵션 추가
+	options.compilerArgs += '-parameters'
 }
 
 // clean 태스크에 생성 폴더 삭제 로직 추가
