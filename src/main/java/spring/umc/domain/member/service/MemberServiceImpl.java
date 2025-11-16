@@ -5,6 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.umc.domain.member.converter.MemberConverter;
+import spring.umc.domain.member.dto.req.MemberRequestDTO;
+import spring.umc.domain.member.dto.res.MemberResponseDTO;
 import spring.umc.domain.member.entity.FoodCategory;
 import spring.umc.domain.member.entity.Member;
 import spring.umc.domain.member.entity.PreferFood;
@@ -68,4 +71,21 @@ public class MemberServiceImpl implements MemberService {
 
         preferFoodRepository.saveAll(newPrefers);
     }
+
+    // 회원가입
+    @Override
+    @Transactional
+    public MemberResponseDTO.JoinDTO signup(
+            MemberRequestDTO.JoinDTO dto
+    ){
+        // 사용자 생성
+        Member member = MemberConverter.toMember(dto);
+        // DB 적용
+        memberRepository.save(member);
+
+
+        // 응답 DTO 생성
+        return MemberConverter.toJoinDTO(member);
+    }
+
 }

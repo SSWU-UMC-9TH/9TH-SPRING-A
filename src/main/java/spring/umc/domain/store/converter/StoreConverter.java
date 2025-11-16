@@ -1,7 +1,9 @@
 package spring.umc.domain.store.converter;
 
 import org.springframework.data.domain.Page;
+import spring.umc.domain.store.dto.req.StoreRequestDTO;
 import spring.umc.domain.store.dto.res.StoreResponseDTO;
+import spring.umc.domain.store.entity.Region;
 import spring.umc.domain.store.entity.Store;
 
 import java.util.List;
@@ -37,6 +39,29 @@ public class StoreConverter {
                 .totalElements(storePage.getTotalElements())
                 .isFirst(storePage.isFirst())
                 .isLast(storePage.isLast())
+                .build();
+    }
+
+    /**
+     * 가게 생성 DTO -> Entity
+     */
+    public static Store toStore(StoreRequestDTO.CreateStoreDTO request, Region region) {
+        return Store.builder()
+                .name(request.getName())
+                .address(request.getAddress())
+                .region(region)
+                .score(0.0f)
+                .build();
+    }
+
+    /**
+     * 8주차 - 가게 생성 Entity -> DTO
+     */
+    public static StoreResponseDTO.CreateStoreResultDTO toCreateStoreResultDTO(Store store) {
+        return StoreResponseDTO.CreateStoreResultDTO.builder()
+                .storeId(store.getStoreId())
+                .name(store.getName())
+                .createdAt(store.getCreatedAt())
                 .build();
     }
 }

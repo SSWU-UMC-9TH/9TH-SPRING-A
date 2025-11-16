@@ -15,6 +15,9 @@ public enum GeneralErrorCode implements BaseErrorCode{
 
     // 서버 에러
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500_1", "예기치 않은 서버 에러가 발생했습니다."),
+
+    // 유효성 에러
+    VALID_FAIL(HttpStatus.BAD_REQUEST, "VALIDATION400_1", "유효성 검사에 실패했습니다."),
     ;
 
     private final HttpStatus status;

@@ -42,11 +42,13 @@ public class Member extends BaseEntity { // 클래스명 User -> Member
     private String phoneNumber;
 
     @Column(name = "point", nullable = false)
-    private Integer point;
+    @Builder.Default
+    private Integer point = 0;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    @Builder.Default
+    private Status status = Status.ACTIVE;
 
     /**
      * 멤버 포인트 추가 메서드
