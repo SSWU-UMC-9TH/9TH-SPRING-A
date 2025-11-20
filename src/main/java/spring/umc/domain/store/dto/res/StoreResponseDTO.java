@@ -1,5 +1,6 @@
 package spring.umc.domain.store.dto.res;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import java.util.List;
@@ -31,5 +32,16 @@ public class StoreResponseDTO {
         private Long totalElements;
         private Boolean isFirst;
         private Boolean isLast;
+    }
+
+    /**
+     * 가게 추가하기
+     */
+    @Builder
+    @Getter
+    public static class CreateStoreResultDTO {
+        private Long storeId;
+        private String name;
+        private LocalDateTime createdAt;
     }
 }

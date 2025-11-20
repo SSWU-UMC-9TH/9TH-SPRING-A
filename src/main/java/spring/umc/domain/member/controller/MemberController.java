@@ -1,5 +1,6 @@
 package spring.umc.domain.member.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import spring.umc.domain.member.dto.res.MemberResponseDTO.MemberDTO;
 import spring.umc.domain.member.entity.Member;
 import spring.umc.domain.member.enums.Gender;
 import spring.umc.domain.member.enums.Status;
+import spring.umc.domain.member.exception.code.MemberSuccessCode;
 import spring.umc.domain.member.service.MemberService;
 import spring.umc.global.apiPayload.ApiResponse;
 import spring.umc.global.apiPayload.code.GeneralSuccessCode;
@@ -50,5 +52,15 @@ public class MemberController {
             @RequestBody MemberRequestDTO.UpdatePreferFoodsDTO request) {
         memberService.updatePreferFoods(memberId, request.getCategoryIds());
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, "선호 음식이 변경되었습니다.");
+    }
+
+    /**
+     * 회원가입
+     */
+    @PostMapping("/sign-up")
+    public ApiResponse<MemberResponseDTO.JoinDTO> signUp(
+            @RequestBody @Valid MemberRequestDTO.JoinDTO dto
+    ){
+        return ApiResponse.onSuccess(MemberSuccessCode.FOUND, memberService.signup(dto));
     }
 }

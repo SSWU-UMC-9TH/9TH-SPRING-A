@@ -1,0 +1,32 @@
+package spring.umc.global.validator;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import spring.umc.domain.member.exception.code.FoodCategoryErrorCode;
+import spring.umc.domain.member.repository.PreferFoodRepository;
+import spring.umc.global.annotation.ExistFoods;
+
+@Component
+@RequiredArgsConstructor
+public class FoodExistValidator implements ConstraintValidator<ExistFoods, List<Long>> {
+
+    private final PreferFoodRepository preferFoodRepository;
+
+    @Override
+    public boolean isValid(List<Long> values, ConstraintValidatorContext context) {
+        boolean isValid = values.stream()
+                .allMatch(value -> preferFoodRepository.existsById(value));
+
+        if (!isValid) {
+            // 이 부분에서 아까 디폴트 메시지를 초기화 시키고, 새로운 메시지로 덮어씌우게 됩니다.
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(FoodCategoryErrorCode.FOOD_CATEGORY_NOT_FOUND.getMessage()).addConstraintViolation();
+        }
+
+        return isValid;
+
+    }
+}

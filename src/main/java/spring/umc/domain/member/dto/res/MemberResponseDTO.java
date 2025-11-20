@@ -1,5 +1,6 @@
 package spring.umc.domain.member.dto.res;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import spring.umc.domain.member.enums.Gender;
@@ -38,4 +39,13 @@ public class MemberResponseDTO {
         private Boolean isFirst;
         private Boolean isLast;
     }
+
+    /**
+     * 회원가입
+     */
+    @Builder
+    public record JoinDTO(
+            Long memberId,
+            LocalDateTime createAt
+    ){}
 }

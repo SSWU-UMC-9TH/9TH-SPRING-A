@@ -1,6 +1,7 @@
 package spring.umc.domain.member.converter;
 
 import org.springframework.data.domain.Page;
+import spring.umc.domain.member.dto.req.MemberRequestDTO;
 import spring.umc.domain.member.dto.res.MemberResponseDTO;
 import spring.umc.domain.member.entity.Member;
 
@@ -39,6 +40,33 @@ public class MemberConverter {
                 .totalElements(memberPage.getTotalElements())
                 .isFirst(memberPage.isFirst())
                 .isLast(memberPage.isLast())
+                .build();
+    }
+
+    /**
+     * 회원가입
+     */
+    // Entity -> DTO
+    public static MemberResponseDTO.JoinDTO toJoinDTO(
+            Member member
+    ){
+        return MemberResponseDTO.JoinDTO.builder()
+                .memberId(member.getMemberId())
+                .createAt(member.getCreatedAt())
+                .build();
+    }
+
+    // DTO -> Entity
+    public static Member toMember(
+            MemberRequestDTO.JoinDTO dto
+    ){
+        return Member.builder()
+                .name(dto.name())
+                .gender(dto.gender())
+                .age(dto.age())
+                .email(dto.email())
+                .address(dto.address())
+                .phoneNumber(dto.phoneNumber())
                 .build();
     }
 }
