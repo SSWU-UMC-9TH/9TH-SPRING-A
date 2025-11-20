@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.entity.Inquiry;
 import spring.umc.domain.member.entity.InquiryImage;
 import spring.umc.domain.member.entity.Member;
+import spring.umc.domain.member.exception.MemberException;
+import spring.umc.domain.member.exception.code.MemberErrorCode;
 import spring.umc.domain.member.repository.InquiryImageRepository;
 import spring.umc.domain.member.repository.InquiryRepository;
 import spring.umc.domain.member.repository.MemberRepository;
@@ -26,7 +28,7 @@ public class InquiryServiceImpl implements InquiryService {
     public Inquiry createInquiry(Long memberId, String title, String content, String imageUrl) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         InquiryImage inquiryImage = InquiryImage.builder()
                 .inquiryImageUrl(imageUrl)
@@ -47,6 +49,9 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public Page<Inquiry> getMyInquiries(Long memberId, String titleKeyword, Pageable pageable) {
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
         return inquiryRepository.searchInquiries(memberId, titleKeyword, pageable);
     }
 }

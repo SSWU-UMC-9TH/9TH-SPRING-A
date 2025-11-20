@@ -10,6 +10,8 @@ import spring.umc.domain.mission.entity.MissionImage;
 import spring.umc.domain.mission.repository.MissionImageRepository;
 import spring.umc.domain.mission.repository.MissionRepository;
 import spring.umc.domain.store.entity.Store;
+import spring.umc.domain.store.exception.StoreException;
+import spring.umc.domain.store.exception.code.StoreErrorCode;
 import spring.umc.domain.store.repository.StoreRepository;
 import java.time.LocalDate;
 
@@ -26,7 +28,7 @@ public class MissionServiceImpl implements MissionService {
     @Transactional
     public Mission createMission(Long storeId, String content, Integer point, LocalDate deadline, String imageUrl) { // 4. 시그니처 수정
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("Store not found"));
+                .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
 
         MissionImage missionImage = MissionImage.builder()
                 .missionImageUrl(imageUrl)

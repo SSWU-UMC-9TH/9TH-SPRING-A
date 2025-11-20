@@ -9,7 +9,7 @@ public interface ReviewRepositoryCustom {
     Page<Review> searchReviews(
             Long memberId,
             Long storeId,
-            Integer minScore,
+            Double minScore,
             Pageable pageable
     );
 }

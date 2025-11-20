@@ -1,4 +1,4 @@
-package spring.umc.domain.store.service;
+package spring.umc.domain.store.service.query;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

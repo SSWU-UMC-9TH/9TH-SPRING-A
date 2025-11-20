@@ -9,7 +9,7 @@ public interface ReviewService {
     /**
      * 리뷰 생성 (비즈니스 로직 + 트랜잭션)
      */
-    Review createReview(Long memberId, Long storeId, String content, Integer score, String imageUrl);
+    Review createReview(Long memberId, Long storeId, String content, Double score, String imageUrl);
 
     /**
      * 리뷰 동적 검색 (QueryDSL)
@@ -17,7 +17,7 @@ public interface ReviewService {
     Page<Review> searchReviews(
             Long memberId,
             Long storeId,
-            Integer minScore,
+            Double minScore,
             Pageable pageable
     );
 }

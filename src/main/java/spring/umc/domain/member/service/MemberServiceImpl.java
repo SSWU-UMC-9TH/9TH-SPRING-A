@@ -10,6 +10,10 @@ import spring.umc.domain.member.entity.Member;
 import spring.umc.domain.member.entity.PreferFood;
 import spring.umc.domain.member.enums.Gender;
 import spring.umc.domain.member.enums.Status;
+import spring.umc.domain.member.exception.FoodCategoryException;
+import spring.umc.domain.member.exception.MemberException;
+import spring.umc.domain.member.exception.code.FoodCategoryErrorCode;
+import spring.umc.domain.member.exception.code.MemberErrorCode;
 import spring.umc.domain.member.repository.FoodCategoryRepository;
 import spring.umc.domain.member.repository.MemberRepository;
 import spring.umc.domain.member.repository.PreferFoodRepository;
@@ -29,7 +33,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
     @Override
@@ -50,6 +54,10 @@ public class MemberServiceImpl implements MemberService {
         preferFoodRepository.deleteAll(existingPrefers);
 
         List<FoodCategory> newCategories = foodCategoryRepository.findAllById(categoryIds);
+
+        if (newCategories.size() != categoryIds.size()) {
+            throw new FoodCategoryException(FoodCategoryErrorCode.FOOD_CATEGORY_NOT_FOUND);
+        }
 
         List<PreferFood> newPrefers = newCategories.stream()
                 .map(category -> PreferFood.builder()

@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.entity.Alarm;
 import spring.umc.domain.member.entity.Member;
 import spring.umc.domain.member.enums.Dtype;
+import spring.umc.domain.member.exception.MemberException;
+import spring.umc.domain.member.exception.code.MemberErrorCode;
 import spring.umc.domain.member.repository.AlarmRepository;
 import spring.umc.domain.member.repository.MemberRepository;
 
@@ -23,7 +25,7 @@ public class AlarmServiceImpl implements AlarmService {
     @Transactional
     public Alarm createAlarm(Long memberId, Dtype dtype, String title, String content) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Alarm alarm = Alarm.builder()
                 .member(member)
@@ -38,7 +40,7 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public Page<Alarm> getMyAlarms(Long memberId, Pageable pageable) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         return alarmRepository.findByMemberOrderByCreatedAtDesc(member, pageable);
     }
