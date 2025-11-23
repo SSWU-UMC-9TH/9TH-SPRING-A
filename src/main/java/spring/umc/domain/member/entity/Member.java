@@ -46,7 +46,7 @@ public class Member extends BaseEntity {
     private Address address;
 
     @Column(name = "detail_address", length = 255)
-    private String detail_address;
+    private String detailAddress;
 
     @Column(name = "email", length = 255)
     private String email;
@@ -55,7 +55,7 @@ public class Member extends BaseEntity {
     private String phoneNumber;
 
     @Column(name = "point")
-    private Integer point;
+    private Integer point=0;
 
     @Column(name = "social_uid", length = 255)
     private String socialUid;
@@ -64,7 +64,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member")//, cascade = CascadeType.ALL, orphanRemoval = true
     @Builder.Default
     private List<MemberFood> memberFoods = new ArrayList<>();
 
