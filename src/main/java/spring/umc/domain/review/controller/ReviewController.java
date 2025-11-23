@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.umc.domain.review.dto.ReviewResponseDto;
 import spring.umc.domain.review.service.ReviewService;
+import spring.umc.global.apiPayload.ApiResponse;
+import spring.umc.global.apiPayload.code.GeneralSuccessCode;
 
 
 @RestController
@@ -24,13 +26,14 @@ public class ReviewController {
      *  - 페이징 : Pageable (page, size)
      */
     @GetMapping
-    public ResponseEntity<Page<ReviewResponseDto>> getMyReviews(
-            @RequestParam(name = "userId") Long userId, // 현재는 임시로 userId 직접 받음 . . 나중에 로그인 로직 설정하면 수정하기
-            @RequestParam(name = "storeName", required = false) String storeName, //가게 이름
-            @RequestParam(name = "ratingGroup", required = false) Integer ratingGroup, //별점
+    public ResponseEntity<ApiResponse<Page<ReviewResponseDto>>> getMyReviews(
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "storeName", required = false) String storeName,
+            @RequestParam(name = "ratingGroup", required = false) Integer ratingGroup,
             @PageableDefault(size = 10) Pageable pageable
     ) {
         Page<ReviewResponseDto> reviews = reviewService.getMyReviews(userId, storeName, ratingGroup, pageable);
-        return ResponseEntity.ok(reviews);
+        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.REVIEW_LIST_OK, reviews));
     }
+
 }
