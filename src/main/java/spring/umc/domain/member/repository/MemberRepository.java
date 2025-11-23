@@ -26,4 +26,7 @@ public interface MemberRepository extends JpaRepository<User, Long> {
         GROUP BY u.nickname, u.email, u.point
     """)
     MyPageResponse findMyPageByUserId(@Param("userId") Long userId);
+    boolean existsByLoginId(String loginId);
+    boolean existsByEmail(String email);
+
 }
