@@ -2,6 +2,7 @@ package spring.umc.global.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import spring.umc.global.validator.FoodExistValidator;
 
 import java.lang.annotation.*;
 

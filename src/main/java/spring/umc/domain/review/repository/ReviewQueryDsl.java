@@ -3,7 +3,7 @@ package spring.umc.domain.review.repository;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import spring.umc.domain.review.dto.ReviewResponseDto;
+import spring.umc.domain.review.dto.ReviewResDTO;
 
 /**
  * Review QueryDSL 커스텀 쿼리용 인터페이스
@@ -16,5 +16,5 @@ public interface ReviewQueryDsl {
      * @param pageable 페이징 정보
      * @return Page 형태의 ReviewResponseDto 결과
      */
-    Page<ReviewResponseDto> findMyReviewsByBuilder(BooleanBuilder builder, Pageable pageable);
+    Page<ReviewResDTO> findMyReviewsByBuilder(BooleanBuilder builder, Pageable pageable);
 }

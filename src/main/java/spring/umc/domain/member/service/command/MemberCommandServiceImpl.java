@@ -6,6 +6,7 @@ import spring.umc.domain.member.converter.MemberConverter;
 import spring.umc.domain.member.dto.MemberReqDTO;
 import spring.umc.domain.member.dto.MemberResDTO;
 import spring.umc.domain.member.exception.MemberException;
+import spring.umc.domain.member.exception.code.FoodCategoryErrorCode;
 import spring.umc.domain.member.exception.code.MemberErrorCode;
 import spring.umc.domain.member.repository.MemberRepository;
 import spring.umc.domain.member.repository.UserFavoriteFoodRepository;
@@ -42,7 +43,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
                 // FoodCategory 조회
                 FoodCategory category = foodCategoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new MemberException(MemberErrorCode.CATEGORY_NOT_FOUND));
+                        .orElseThrow(() -> new MemberException(FoodCategoryErrorCode.CATEGORY_NOT_FOUND));
 
                 // UserFavoriteFood 생성
                 UserFavoriteFood favorite = UserFavoriteFood.builder()
