@@ -1,0 +1,21 @@
+package spring.umc.domain.member.dto;
+
+import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
+import spring.umc.domain.member.enums.Address;
+import spring.umc.domain.member.enums.Gender;
+import spring.umc.global.annotation.ExistFoods;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public class MemberReqDTO {
+    public record JoinDTO(
+            String name,
+            Gender gender,
+            LocalDate birth,
+            Address address, //음
+            String specAddress,
+            @ExistFoods
+            List<Long> preferCategory
+    ){}
+}

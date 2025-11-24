@@ -1,14 +1,30 @@
 package spring.umc.domain.review.converter;
 
 import org.springframework.stereotype.Component; // <-- 1. 스프링 부품으로 등록!
+import spring.umc.domain.member.entity.Member;
+import spring.umc.domain.review.dto.ReviewReqDTO;
 import spring.umc.domain.review.dto.ReviewResponseDTO;
 import spring.umc.domain.review.entity.Review;
+import spring.umc.domain.store.entity.Store;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class ReviewConverter {
+
+    // 1. DTO -> Entity (리뷰 생성할 때)
+    public static Review toEntity(ReviewReqDTO.AddReviewDTO request, Member member, Store store) {
+        return Review.builder()
+                .star(request.getStar())
+                .content(request.getContent())
+                .member(member) // 리뷰 쓴 사람 (하드코딩된 유저)
+                .store(store)   // 리뷰 달린 가게
+                .build();
+    }
+
+
 
     // entity->dto 변환
     public ReviewResponseDTO.ReviewDto toReviewDto(Review review) {
@@ -28,5 +44,12 @@ public class ReviewConverter {
         return reviewList.stream()
                 .map(this::toReviewDto)
                 .collect(Collectors.toList());
+    }
+
+    public static ReviewResponseDTO.CreateReviewResultDto toCreateReviewResultDto(Review review) {
+        return ReviewResponseDTO.CreateReviewResultDto.builder()
+                .reviewId(review.getId())
+                .createdAt(review.getCreatedAt())
+                .build();
     }
 }

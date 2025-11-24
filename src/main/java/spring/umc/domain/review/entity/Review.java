@@ -38,8 +38,10 @@ public class Review extends BaseEntity {
 
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<ReviewImage> reviewImageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<ReviewReply> reviewReplyList = new ArrayList<>();
 }

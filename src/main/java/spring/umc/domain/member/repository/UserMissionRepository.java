@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import spring.umc.domain.member.entity.UserMission;
 import spring.umc.domain.member.dto.MissionHistoryDto;
+import spring.umc.domain.member.enums.MissionStatus;
 
 
 public interface UserMissionRepository extends JpaRepository<UserMission, Long> {
@@ -28,4 +29,11 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     @Query("SELECT COUNT(um) "+ "FROM UserMission um "+
             "WHERE um.member.id = :userId AND um.isFinished = true")
     Long countFinishedMission(@Param("userId") Long userId); //5주차 피드백수정2
+
+    //해당유저가 특정미션에 도전중인지 확인하는 쿼리
+    boolean existsByMemberIdAndMissionIdAndStatus(
+            Long memberId,
+            Long missionId,
+            MissionStatus status
+    );
 }

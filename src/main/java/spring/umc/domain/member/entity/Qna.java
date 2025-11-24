@@ -38,5 +38,6 @@ public class Qna extends BaseEntity {
     private QnaReply qnaReply;
 
     @OneToMany(mappedBy = "qna", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<QnaImage> qnaImageList = new ArrayList<>();
 }

@@ -18,7 +18,7 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/ecj/3.40.0/5c26f6a20278196f8038a284d885c3796cd7d422/ecj-3.40.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.4/3864a1320d97d7b045f729a326e1e077661f31b7/reactive-streams-1.0.4.jar" />
         </processorPath>
-        <module name="spring.umc.main" />
+        <module name="umc.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />
