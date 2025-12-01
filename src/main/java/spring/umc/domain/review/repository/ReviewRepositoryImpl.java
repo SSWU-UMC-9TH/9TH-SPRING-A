@@ -23,8 +23,6 @@ public class ReviewRepositoryImpl implements ReviewQueryDsl {
 
     private final EntityManager em;              // ✅ ReviewRepository 주입 금지
 
-    private final ReviewRepository reviewRepository;
-
 
     @Override
     public List<Review> searchReview(Predicate predicate) {
