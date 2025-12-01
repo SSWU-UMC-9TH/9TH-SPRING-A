@@ -3,12 +3,13 @@ package spring.umc.domain.review.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import spring.umc.domain.review.dto.QReviewResponseDto;
-import spring.umc.domain.review.dto.ReviewResponseDto;
+import spring.umc.domain.review.dto.QReviewResDTO;
+import spring.umc.domain.review.dto.ReviewResDTO;
 import spring.umc.domain.review.entity.QReview;
 import spring.umc.domain.store.entity.QStore;
 
@@ -22,19 +23,20 @@ import java.util.List;
  * - DTO projection으로 성능 최적화
  */
 @Repository
+@Qualifier("reviewQueryDsl")
 @RequiredArgsConstructor
 public class ReviewQueryDslImpl implements ReviewQueryDsl {
 
-    private final JPAQueryFactory queryFactory; // ✅ com.querydsl.jpa.impl.JPAQueryFactory
+    private final JPAQueryFactory queryFactory; // com.querydsl.jpa.impl.JPAQueryFactory
 
     @Override
-    public Page<ReviewResponseDto> findMyReviewsByBuilder(BooleanBuilder builder, Pageable pageable) {
+    public Page<ReviewResDTO> findMyReviewsByBuilder(BooleanBuilder builder, Pageable pageable) {
         QReview review = QReview.review;
         QStore store = QStore.store;
 
         // 메인 조회 쿼리
-        List<ReviewResponseDto> results = queryFactory
-                .select(new QReviewResponseDto(
+        List<ReviewResDTO> results = queryFactory
+                .select(new QReviewResDTO(
                         review.id,
                         review.content,
                         review.rating,

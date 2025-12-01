@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import spring.umc.domain.review.dto.ReviewResponseDto;
-import spring.umc.domain.review.service.ReviewService;
+import spring.umc.domain.review.dto.ReviewReqDTO;
+import spring.umc.domain.review.dto.ReviewResDTO;
+import spring.umc.domain.review.service.command.ReviewCommandService;
+import spring.umc.domain.review.service.query.ReviewQueryService;
 import spring.umc.global.apiPayload.ApiResponse;
 import spring.umc.global.apiPayload.code.GeneralSuccessCode;
 
@@ -17,7 +19,8 @@ import spring.umc.global.apiPayload.code.GeneralSuccessCode;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private final ReviewService reviewService;
+    private final ReviewQueryService reviewService;
+    private final ReviewCommandService reviewCommandService;
 
     /**
      * 내가 작성한 리뷰 목록 조회 API
@@ -26,14 +29,27 @@ public class ReviewController {
      *  - 페이징 : Pageable (page, size)
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<ReviewResponseDto>>> getMyReviews(
+    public ResponseEntity<ApiResponse<Page<ReviewResDTO>>> getMyReviews(
             @RequestParam(name = "userId") Long userId,
             @RequestParam(name = "storeName", required = false) String storeName,
             @RequestParam(name = "ratingGroup", required = false) Integer ratingGroup,
             @PageableDefault(size = 10) Pageable pageable
     ) {
-        Page<ReviewResponseDto> reviews = reviewService.getMyReviews(userId, storeName, ratingGroup, pageable);
+        Page<ReviewResDTO> reviews = reviewService.getMyReviews(userId, storeName, ratingGroup, pageable);
         return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.REVIEW_LIST_OK, reviews));
+    }
+
+
+    /**
+     * 리뷰 생성 API
+     * - /api/my/reviews
+     */
+
+    @PostMapping
+    public ResponseEntity<ReviewResDTO.CreateDTO> createReview(
+            @RequestBody ReviewReqDTO.CreateDTO dto
+    ) {
+        return ResponseEntity.ok(reviewCommandService.createReview(dto));
     }
 
 }
