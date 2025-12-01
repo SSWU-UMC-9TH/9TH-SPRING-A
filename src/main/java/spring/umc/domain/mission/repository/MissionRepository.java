@@ -20,4 +20,18 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
         ORDER BY m.createdAt DESC
     """)
     Page<Mission> findByRegion(@Param("region") String region, Pageable pageable);
+
+    /** 특정 가게(storeId) 미션 조회 with 페이징 */
+    @Query("""
+        SELECT m
+        FROM Mission m
+        JOIN FETCH m.store s
+        WHERE s.id = :storeId
+        ORDER BY m.createdAt DESC
+    """)
+    Page<Mission> findByStoreId(
+            @Param("storeId") Long storeId,
+            Pageable pageable
+    );
+
 }
