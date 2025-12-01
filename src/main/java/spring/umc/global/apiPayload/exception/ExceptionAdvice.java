@@ -14,6 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static spring.umc.global.apiPayload.code.GeneralErrorCode.PAGE_NUMBER_INVALID;
+
 @Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
 public class ExceptionAdvice {
@@ -38,5 +40,11 @@ public class ExceptionAdvice {
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ApiResponse.onFailure(code,errors));
+    }
+
+    @ExceptionHandler(PageNumberException.class)
+    public ApiResponse<String> handlePageNumberException(PageNumberException e) {
+        // 400 BAD REQUEST 상태 코드를 사용하고, 메시지를 반환
+        return ApiResponse.onFailure(PAGE_NUMBER_INVALID, e.getMessage());
     }
 }

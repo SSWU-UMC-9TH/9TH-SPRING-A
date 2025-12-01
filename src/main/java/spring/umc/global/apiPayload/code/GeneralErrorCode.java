@@ -29,6 +29,8 @@ public enum GeneralErrorCode implements BaseErrorCode{
             "MISSION2001", "해당 미션을 찾을 수 없습니다."),
     MISSION_ALREADY_CHALLENGING(HttpStatus.NOT_FOUND,
             "MISSION2002", "이미 미션을 도전중입니다."),
+    PAGE_NUMBER_INVALID(HttpStatus.NOT_FOUND,
+            "MISSION2002", "페이지 번호는 1 이상이어야합니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND,
             "MEMBER5002", "해당 멤버를 찾을 수 없습니다.");
 

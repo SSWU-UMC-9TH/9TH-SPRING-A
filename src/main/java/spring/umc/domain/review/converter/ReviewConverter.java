@@ -1,5 +1,6 @@
 package spring.umc.domain.review.converter;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component; // <-- 1. 스프링 부품으로 등록!
 import spring.umc.domain.member.entity.Member;
 import spring.umc.domain.review.dto.ReviewReqDTO;
@@ -7,6 +8,7 @@ import spring.umc.domain.review.dto.ReviewResponseDTO;
 import spring.umc.domain.review.entity.Review;
 import spring.umc.domain.store.entity.Store;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +52,33 @@ public class ReviewConverter {
         return ReviewResponseDTO.CreateReviewResultDto.builder()
                 .reviewId(review.getId())
                 .createdAt(review.getCreatedAt())
+                .build();
+    }
+    // result -> DTO
+    public static ReviewResponseDTO.ReviewPreViewListDTO toReviewPreviewListDTO(
+            Page<Review> result
+    ){
+        return ReviewResponseDTO.ReviewPreViewListDTO.builder()
+                .reviewList(result.getContent().stream()
+                        .map(ReviewConverter::toReviewPreviewDTO)
+                        .toList()
+                )
+                .listSize(result.getSize())
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isFirst(result.isFirst())
+                .isLast(result.isLast())
+                .build();
+    }
+
+    public static ReviewResponseDTO.ReviewPreViewDTO toReviewPreviewDTO(
+            Review review
+    ){
+        return ReviewResponseDTO.ReviewPreViewDTO.builder()
+                .ownerName(review.getMember().getName())
+                .score(review.getStar())
+                .body(review.getContent())
+                .createdAt(LocalDate.from(review.getCreatedAt()))
                 .build();
     }
 }
