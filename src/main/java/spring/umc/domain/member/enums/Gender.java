@@ -1,2 +1,5 @@
-package spring.umc.domain.member.enums;public enum Gender {
+package spring.umc.domain.member.enums;
+
+public enum Gender {
+    MALE, FEMALE, NONE
 }
