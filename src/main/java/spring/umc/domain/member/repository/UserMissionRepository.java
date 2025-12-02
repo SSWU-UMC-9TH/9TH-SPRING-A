@@ -9,6 +9,9 @@ import spring.umc.domain.member.entity.UserMission;
 import spring.umc.domain.member.dto.MissionHistoryDto;
 import spring.umc.domain.member.enums.MissionStatus;
 
+import java.util.List;
+import java.util.Optional;
+
 
 public interface UserMissionRepository extends JpaRepository<UserMission, Long> {
 
@@ -36,4 +39,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
             Long missionId,
             MissionStatus status
     );
+
+    Optional<UserMission> findByMemberIdAndMissionId(Long memberId, Long missionId);
+    Page<UserMission> findAllByMemberIdAndStatus(Long memberId, MissionStatus status, Pageable pageable);
 }

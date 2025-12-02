@@ -7,6 +7,8 @@ import spring.umc.domain.mission.entity.Mission;
 import spring.umc.domain.store.entity.Store;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MissionConverter {
 
@@ -33,5 +35,35 @@ public class MissionConverter {
                 .userMissionId(userMission.getId())
                 .createdAt(userMission.getCreatedAt())
                 .build();
+    }
+
+    // UserMission -> DTO (미션완료 결과 응답)
+    public static MissionResDTO.CompleteResultDTO toCompleteResultDTO(UserMission userMission) {
+        String statusString = userMission.getStatus() != null ? userMission.getStatus().toString() : "UNKNOWN";
+
+        return MissionResDTO.CompleteResultDTO.builder()
+                .userMissionId(userMission.getId())
+                .missionId(userMission.getId()) // Mission ID 포함
+                .status(statusString) // 완료된 상태 (COMPLETE) 포함
+                .build();
+    }
+
+    public static MissionResDTO.UserMissionPreviewDTO toUserMissionPreviewDTO(UserMission userMission) {
+        // Mission 엔티티는 UserMission에 포함되어 있을 것입니다.
+        Mission mission = userMission.getMission();
+
+        return MissionResDTO.UserMissionPreviewDTO.builder()
+                .userMissionId(userMission.getId())
+                .missionId(mission.getId())
+                .missionName(mission.getMissionCondition())
+                .dueDate(mission.getDeadline().atStartOfDay())
+                .status(userMission.getStatus().toString())
+                .build();
+    }
+
+    public static List<MissionResDTO.UserMissionPreviewDTO> toUserMissionPreviewListDTO(List<UserMission> userMissions) {
+        return userMissions.stream()
+                .map(MissionConverter::toUserMissionPreviewDTO)
+                .collect(Collectors.toList());
     }
 }
