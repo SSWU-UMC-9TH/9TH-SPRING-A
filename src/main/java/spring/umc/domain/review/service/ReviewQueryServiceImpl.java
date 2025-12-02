@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.entity.Member;
@@ -76,76 +77,9 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
     }
 
     @Override
-    public List<Review> searchMyReview(Long memberId, String type, String query) {
-
-        if (!type.equals("location") && !type.equals("star") && !type.equals("both")) {
-            throw new GeneralException(ReviewErrorCode.REVIEW_SEARCH_TYPE_INVALID);
-        }
-
-
-        if (type.equals("star")) {
-            try {
-                Float.parseFloat(query);
-            } catch (NumberFormatException e) {
-                throw new GeneralException(ReviewErrorCode.REVIEW_STAR_QUERY_NOT_NUMBER);
-            }
-        }
-
-
-        if (type.equals("both")) {
-            try {
-                String secondQuery = query.split("&")[1];
-                Float.parseFloat(secondQuery);
-            } catch (Exception e) {
-                throw new GeneralException(ReviewErrorCode.REVIEW_STAR_QUERY_NOT_NUMBER);
-            }
-        }
-        QReview review = QReview.review;
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(review.member.id.eq(memberId));
-
-        if (type != null) {
-            String safeType = type.trim();
-            String safeQuery = (query != null) ? query.trim() : "";
-
-            if (safeType.equalsIgnoreCase("location")) {
-                builder.and(review.store.name.contains(safeQuery));
-            }
-            if (safeType.equalsIgnoreCase("star")){
-                if (!safeQuery.isEmpty()) {
-                    int starValue = Integer.parseInt(safeQuery);
-                    if (starValue == 5) {
-                        builder.and(review.star.eq(5.0f));
-                    } else {
-                        float lowerBound = (float) starValue;
-                        float upperBound = lowerBound + 1.0f;
-                        builder.and(review.star.goe(lowerBound).and(review.star.lt(upperBound)));
-                    }
-                }
-            }
-            if (safeType.equalsIgnoreCase("both")) {
-                if (!safeQuery.isEmpty() && safeQuery.contains("&")) {
-                    String storeNamePart = safeQuery.split("&")[0].trim();
-                    String starPart = safeQuery.split("&")[1].trim();
-                    if (!storeNamePart.isEmpty()) {
-                        builder.and(review.store.name.contains(storeNamePart));
-                    }
-                    if (!starPart.isEmpty()) {
-                        int starValue = Integer.parseInt(starPart);
-                        if (starValue == 5) {
-                            builder.and(review.star.eq(5.0f));
-                        } else {
-                            float lowerBound = (float) starValue;
-                            float upperBound = lowerBound + 1.0f;
-                            builder.and(review.star.goe(lowerBound).and(review.star.lt(upperBound)));
-                        }
-                    }
-                }
-            }
-        }
-
-        List<Review> reviewList = reviewRepository.searchReview(builder);
-        return reviewList;
+    public Page<Review> searchMyReview(Long memberId, Integer pageable) {
+        Pageable p = PageRequest.of(pageable, 5);
+        return reviewRepository.findByMemberId(memberId, p);
     }
 
     private final ReviewRepository ReviewRepository;

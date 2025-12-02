@@ -33,7 +33,7 @@ public class PageValidationArgumentResolver implements HandlerMethodArgumentReso
             int page = Integer.parseInt(pageValue);
 
             // 2. 핵심 검증 로직: 프론트엔드에서 1 이상의 page를 전달해야 함
-            if (page < 1) {
+            if (page < 1) { //0부터되는거같음.뭐지
                 // page가 1 미만이면 커스텀 예외 발생! (RestControllerAdvice로 넘어감)
                 throw new PageNumberException("페이지 번호는 1 이상이어야 합니다. 현재 페이지: " + page);
             }

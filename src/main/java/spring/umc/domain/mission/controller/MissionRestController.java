@@ -46,4 +46,18 @@ public class MissionRestController {
         // 하드코딩 유저 ID 1L 사용
         return ApiResponse.onSuccess(GeneralSuccessCode.OK,missionCommandService.challengeMission(1L, missionId));
     }
+
+    // 미션 완료처리하기
+    // URL: POST /missions/{missionId}/challenges
+    @PostMapping("/{missionId}/complete")
+    @Operation(summary = "미션 도전 API", description = "유저가 미션을 도전 중 상태로 추가합니다. (아직 유저 ID는 1로 고정)")
+    @Parameters({
+            @Parameter(name = "missionId", description = "도전할 미션의 아이디, path variable 입니다!")
+    })
+    public ApiResponse<MissionResDTO.ChallengeResultDTO> completeMission(
+            @PathVariable Long missionId
+    ) {
+        // 하드코딩 유저 ID 1L 사용
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK,missionCommandService.challengeMission(1L, missionId));
+    }
 }
