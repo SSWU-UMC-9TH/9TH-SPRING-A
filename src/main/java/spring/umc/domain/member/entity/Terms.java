@@ -23,5 +23,6 @@ public class Terms extends BaseEntity {
     private String content;
 
     @OneToMany(mappedBy = "terms", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<UserTerms> userTermsList = new ArrayList<>();
 }

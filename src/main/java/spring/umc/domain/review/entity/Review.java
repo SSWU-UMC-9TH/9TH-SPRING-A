@@ -23,6 +23,9 @@ public class Review extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(columnDefinition = "FLOAT") //?
+    private Float star;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -35,8 +38,10 @@ public class Review extends BaseEntity {
 
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<ReviewImage> reviewImageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<ReviewReply> reviewReplyList = new ArrayList<>();
 }

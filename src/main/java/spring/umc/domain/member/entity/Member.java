@@ -3,6 +3,7 @@ package spring.umc.domain.member.entity;
 import spring.umc.global.BaseEntity;
 import spring.umc.domain.member.enums.Gender;
 import spring.umc.domain.member.enums.Status;
+import spring.umc.domain.member.enums.Address;
 import spring.umc.domain.review.entity.Review;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,19 +35,20 @@ public class Member extends BaseEntity {
 
     private LocalDate birth;
 
-    @Column(length = 50)
-    private String address;
+    @Enumerated(EnumType.STRING)
+    private Address address;
 
     @Column(length = 50)
     private String detailAddress;
 
+    @Builder.Default //4주차 피드백 수정-1
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
-    private Status status;
+    private Status status=Status.ACTIVE; //4주차 피드백 수정-1
 
     private LocalDateTime inactiveDate;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String email;
 
     private Integer point;
@@ -60,25 +62,31 @@ public class Member extends BaseEntity {
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<UserMission> userMissionList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<Review> reviewList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<Qna> qnaList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<UserTerms> userTermsList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<Alarm> alarmList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<PointHistory> pointHistoryList = new ArrayList<>();
 }

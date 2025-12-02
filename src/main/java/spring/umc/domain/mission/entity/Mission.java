@@ -7,6 +7,7 @@ import spring.umc.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +23,10 @@ public class Mission extends BaseEntity {
     private Long id;
 
     @Column(length = 50)
-    private String missionCondition; //예약어?때문에 수정
+    private String missionCondition; //미션 조건(내용)
 
     private Integer point;
-
+    private LocalDate deadline;
     private Integer rewardPercent;
 
 
@@ -35,5 +36,6 @@ public class Mission extends BaseEntity {
 
 
     @OneToMany(mappedBy = "mission", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<UserMission> userMissionList = new ArrayList<>();
 }

@@ -32,4 +32,9 @@ public class UserMission extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
+
+    public void updateStatusToComplete() {
+        this.status = MissionStatus.COMPLETED;
+        this.isFinished = true; // 관련 필드들을 함께 변경하여 데이터 일관성 유지
+    }
 }

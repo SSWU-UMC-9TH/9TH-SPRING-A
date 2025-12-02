@@ -1,0 +1,73 @@
+package spring.umc.domain.member.service.command;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import spring.umc.domain.member.converter.MemberConverter;
+import spring.umc.domain.member.dto.MemberReqDTO;
+import spring.umc.domain.member.dto.MemberResDTO;
+import spring.umc.domain.member.entity.Food;
+import spring.umc.domain.member.entity.Member;
+import spring.umc.domain.member.entity.Userfood;
+import spring.umc.domain.member.exception.FoodException;
+import spring.umc.domain.member.exception.code.FoodErrorCode;
+import spring.umc.domain.member.repository.FoodRepository;
+import spring.umc.domain.member.repository.MemberFoodRepository;
+import spring.umc.domain.member.repository.MemberRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class MemberCommandServiceImpl implements MemberCommandService{
+
+    private final MemberRepository memberRepository;
+    private final MemberFoodRepository memberFoodRepository;
+    private final FoodRepository foodRepository;
+
+    private final javax.sql.DataSource dataSource;
+    // 회원가입
+    @Override
+    @Transactional
+    public MemberResDTO.JoinDTO signup(
+
+            MemberReqDTO.JoinDTO dto
+
+    ){
+
+        // 사용자 생성
+        Member member = MemberConverter.toMember(dto);
+        // DB 적용
+        memberRepository.save(member);
+
+        // 선호 음식 존재 여부 확인
+        if (dto.preferCategory() != null && !dto.preferCategory().isEmpty()) {
+            List<Userfood> memberFoodList = new ArrayList<>();
+
+            // 선호 음식 ID별 조회
+            for (Long id : dto.preferCategory()){
+
+                // 음식 존재 여부 검증
+                Food food = foodRepository.findById(id)
+                        .orElseThrow(() -> new FoodException(FoodErrorCode.FOOD_NOT_FOUND));
+
+                // MemberFood 엔티티 생성 (컨버터 사용해야 함)
+                Userfood memberFood = Userfood.builder()
+                        .member(member)
+                        .food(food)
+                        .build();
+
+                // 사용자 - 음식 (선호 음식) 추가
+                memberFoodList.add(memberFood);
+            }
+
+            // 모든 선호 음식 추가: DB 적용
+            memberFoodRepository.saveAll(memberFoodList);
+        }
+
+
+        // 응답 DTO 생성
+        return MemberConverter.toJoinDTO(member);
+    }
+}

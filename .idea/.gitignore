@@ -1,3 +1,22 @@
 # 디폴트 무시된 파일
 /shelf/
 /workspace.xml
+# IDE/Editor files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+tmp/
+/src/main/generated/
+# Build output
+/build/
+/target/
+.gradle/
+/.settings
+**/generated
+*.log
+/logs
+# ... (다른 것들) ...
+# OS Generated files
+.DS_Store
