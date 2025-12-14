@@ -33,4 +33,14 @@ public class MemberConverter {
                 .gender(dto.gender())
                 .build();
     }
+    // ✅ 로그인 응답 DTO (member + accessToken)
+    public static MemberResDTO.LoginDTO toLoginDTO(
+            Member member,
+            String accessToken
+    ){
+        return MemberResDTO.LoginDTO.builder()
+                .memberId(member.getId())
+                .accessToken(accessToken)
+                .build();
+    }
 }

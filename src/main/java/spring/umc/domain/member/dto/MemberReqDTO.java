@@ -21,4 +21,11 @@ public class MemberReqDTO {
             @ExistFoods
             List<Long> preferCategory
     ){}
+    // 로그인
+    public record LoginDTO(
+            @NotBlank
+            String email,
+            @NotBlank
+            String password
+    ){}
 }
