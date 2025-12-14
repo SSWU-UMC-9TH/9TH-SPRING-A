@@ -8,6 +8,8 @@ import spring.umc.domain.mission.entity.mapping.UserMission;
 import spring.umc.domain.store.entity.Location;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
+    Page<Mission> findByStore_IdOrderByDeadlineAsc(Long storeId, Pageable pageable);
+
 //    Page<UserMission> findByMember_IdAndIsCompleteFalseOrderByMission_DeadlineDesc(
 //            Long userId, Pageable pageable);
 //

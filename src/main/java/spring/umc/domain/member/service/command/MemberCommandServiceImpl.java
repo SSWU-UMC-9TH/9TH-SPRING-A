@@ -1,6 +1,7 @@
 package spring.umc.domain.member.service.command;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.converter.MemberConverter;
@@ -14,6 +15,7 @@ import spring.umc.domain.member.exeption.code.FoodErrorCode;
 import spring.umc.domain.member.repository.FoodRepository;
 import spring.umc.domain.member.repository.MemberFoodRepository;
 import spring.umc.domain.member.repository.MemberRepository;
+import spring.umc.global.auth.enums.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +27,15 @@ public class MemberCommandServiceImpl  implements MemberCommandService{
     private final MemberRepository memberRepository;
     private final MemberFoodRepository memberFoodRepository;
     private final FoodRepository foodRepository;
+    private final PasswordEncoder passwordEncoder;
     // 회원가입
     @Override
     @Transactional
     public MemberResDTO.JoinDTO signup(
             MemberReqDTO.JoinDTO dto
-    ){
+    ){String salt = passwordEncoder.encode(dto.password());
         // 사용자 생성
-        Member member = MemberConverter.toMember(dto);
+        Member member = MemberConverter.toMember(dto, salt, Role.ROLE_USER);
         // DB 적용
         memberRepository.save(member);
 
