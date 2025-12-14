@@ -9,7 +9,6 @@ import spring.umc.domain.member.entity.mapping.MemberFood;
 import spring.umc.domain.member.entity.mapping.MemberTerm;
 import spring.umc.domain.member.enums.Gender;
 import spring.umc.domain.store.enums.Address;
-import spring.umc.global.auth.enums.Role;
 import spring.umc.global.auth.enums.SocialType;
 import spring.umc.global.entity.BaseEntity;
 
@@ -51,11 +50,6 @@ public class Member extends BaseEntity {
 
     @Column(name = "email", length = 255)
     private String email;
-    @Column(nullable = false)
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
     @Column(name = "phone_number", length = 255)
     private String phoneNumber;
