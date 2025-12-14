@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
     List<Member> findByNameAndDeletedAtIsNull(String name);
+    Optional<Member> findByEmail(String email);
     //-> SELECT * FROM `user` WHERE name = '마크' AND deleted_at is null;
 
     // 이렇게도 가능(@Query 어노테이션)

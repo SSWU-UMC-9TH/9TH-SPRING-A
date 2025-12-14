@@ -53,7 +53,12 @@ public class ReviewController {
                 reviewQueryService.getMyReviews(memberId, page)
         );
     }
+    @GetMapping("/reviews")
+    public ApiResponse<ReviewResDTO.ReviewPreViewListDTO> getReviews(){
 
+        ReviewSuccessCode code = ReviewSuccessCode.FOUND;
+        return ApiResponse.onSuccess(code, null);
+    }
 //    @GetMapping("/reviews/search")
 //    public List<Review> searchReview(
 //            @RequestParam String query,
