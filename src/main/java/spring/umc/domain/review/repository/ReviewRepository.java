@@ -2,8 +2,6 @@ package spring.umc.domain.review.repository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +19,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewQue
                      @Param("userId") Long userId,
                      @Param("score") float score,
                      @Param("contents") String contents);
-
-    Page<Review> findByMember_IdOrderByCreatedAtDesc(Long memberId, Pageable pageable);
-
 }
