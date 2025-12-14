@@ -2,6 +2,7 @@ package spring.umc.domain.review.service;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.entity.QMember;
@@ -21,6 +22,17 @@ import java.util.List;
 public class ReviewQueryService {
 
     private final ReviewRepository reviewRepository;
+
+    @Transactional(readOnly = true)
+    public Page<ReviewResDTO.Summary> getMyReviews(Long memberId, int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<Review> reviewPage = reviewRepository.findByMember_IdOrderByCreatedAtDesc(memberId, pageable);
+
+        List<ReviewResDTO.Summary> content = ReviewConverter.toSummaryList(reviewPage.getContent());
+
+        return new PageImpl<>(content, pageable, reviewPage.getTotalElements());
+    }
 
     public List<ReviewResDTO.Summary> searchReview(String query, String type) {
 
@@ -98,6 +110,7 @@ public class ReviewQueryService {
             default -> { /* 적용 안 함 */ }
         }
     }
+
 
 //    @Override
 //    public List<Review> searchReview(

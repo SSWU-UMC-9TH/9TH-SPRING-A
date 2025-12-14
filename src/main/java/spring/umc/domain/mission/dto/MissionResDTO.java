@@ -5,19 +5,11 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 
-public class UserMissionResDTO {
-    @Builder
-    public record ChallengeDTO(
-            Long userMissionId,
-            Long memberId,
-            Long missionId,
-            Long storeId,
-            boolean isComplete
-    ) {}
+public class MissionResDTO {
+
     @Getter
     @Builder
-    public static class OngoingMissionSummary {
-        private Long userMissionId;
+    public static class StoreMissionSummary {
         private Long missionId;
         private String storeName;
         private String conditional;

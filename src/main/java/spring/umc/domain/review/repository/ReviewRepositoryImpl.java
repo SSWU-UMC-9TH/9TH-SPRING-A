@@ -4,8 +4,12 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.entity.QMember;
+import spring.umc.domain.review.converter.ReviewConverter;
+import spring.umc.domain.review.dto.ReviewResDTO;
 import spring.umc.domain.review.entity.QReview;
 import spring.umc.domain.review.entity.Review;
 import spring.umc.domain.store.entity.QLocation;
@@ -18,6 +22,7 @@ import java.util.List;
 public class ReviewRepositoryImpl implements ReviewQueryDsl {
 
     private final EntityManager em;              // ✅ ReviewRepository 주입 금지
+
 
     @Override
     public List<Review> searchReview(Predicate predicate) {
@@ -46,5 +51,10 @@ public class ReviewRepositoryImpl implements ReviewQueryDsl {
                 .leftJoin(r.member, m).fetchJoin()
                 .where(predicate)
                 .fetch();
+    }
+
+    @Override
+    public Page<ReviewResDTO.Summary> getMyReviews(Long memberId, int page) {
+        return null;
     }
 }
