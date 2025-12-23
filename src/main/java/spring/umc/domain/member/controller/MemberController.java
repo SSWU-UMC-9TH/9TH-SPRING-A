@@ -9,6 +9,7 @@ import spring.umc.domain.member.dto.MemberReqDTO;
 import spring.umc.domain.member.dto.MemberResDTO;
 import spring.umc.domain.member.exception.code.MemberSuccessCode;
 import spring.umc.domain.member.service.command.MemberCommandService;
+import spring.umc.domain.member.service.query.MemberQueryService;
 import spring.umc.global.apiPayload.ApiResponse;
 
 @RestController
@@ -16,6 +17,7 @@ import spring.umc.global.apiPayload.ApiResponse;
 public class MemberController {
 
     private final MemberCommandService memberCommandService;
+    private final MemberQueryService memberQueryService;
 
     // 회원가입
     @PostMapping("/sign-up")
@@ -23,5 +25,12 @@ public class MemberController {
             @RequestBody @Valid MemberReqDTO.JoinDTO dto
     ){
         return ApiResponse.onSuccess(MemberSuccessCode.FOUND, memberCommandService.signup(dto));
+    }
+    // 로그인
+    @PostMapping("/login")
+    public ApiResponse<MemberResDTO.LoginDTO> login(
+            @RequestBody @Valid MemberReqDTO.LoginDTO dto
+    ){
+        return ApiResponse.onSuccess(MemberSuccessCode.FOUND, memberQueryService.login(dto));
     }
 }
