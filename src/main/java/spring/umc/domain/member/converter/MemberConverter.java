@@ -3,6 +3,7 @@ package spring.umc.domain.member.converter;
 import spring.umc.domain.member.dto.MemberReqDTO;
 import spring.umc.domain.member.dto.MemberResDTO;
 import spring.umc.domain.member.entity.Member;
+import spring.umc.global.auth.enums.Role;
 
 public class MemberConverter {
 
@@ -18,10 +19,15 @@ public class MemberConverter {
 
     // DTO -> Entity
     public static Member toMember(
-            MemberReqDTO.JoinDTO dto
+            MemberReqDTO.JoinDTO dto,
+            String password,
+            Role role
     ){
         return Member.builder()
                 .name(dto.name())
+                .email(dto.email())
+                .password(password)
+                .role(role)
                 .birth(dto.birth())
                 .address(dto.address())
                 .detailAddress(dto.specAddress())

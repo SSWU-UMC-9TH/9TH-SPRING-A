@@ -7,6 +7,7 @@ import spring.umc.domain.member.enums.Address;
 import spring.umc.domain.review.entity.Review;
 import jakarta.persistence.*;
 import lombok.*;
+import spring.umc.global.auth.enums.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,9 +49,14 @@ public class Member extends BaseEntity {
 
     private LocalDateTime inactiveDate;
 
-    @Column(length = 50)
+    @Column(nullable = false, unique = true, length=50)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private Integer point;
 
     @Column(length = 20)
