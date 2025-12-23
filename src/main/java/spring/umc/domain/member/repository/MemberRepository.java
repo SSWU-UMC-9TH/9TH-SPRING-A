@@ -19,4 +19,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "WHERE m.id = :userId " +
             "GROUP BY m.id, m.name, m.email, m.phoneNum")
     Optional<MyPageInfoDTO> findMyPageInfoByUserId(@Param("userId") Long userId);
+
+    Optional<Member> findByEmail(String email);
 }
